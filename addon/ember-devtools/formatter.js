@@ -161,6 +161,16 @@ function property(obj, key, descriptor) {
   const enumerable = descriptor.enumerable;
 
   if (typeof descriptor.get === 'function') {
+    if (descriptor.get.name === 'GETTER_FUNCTION' || descriptor.get.isInheritingGetter) {
+      // Ember getter that's probably safe to evaluate
+      const value = descriptor.get.call(obj);
+      return item(
+        name(key, enumerable),
+        separator(),
+        reference(value)
+      );
+    }
+
     // ES5 getter: forcing the property to compute might have a side effect
     return item(
       name(key, enumerable),
