@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-devtools',
+  name: 'ember-chrome-devtools',
 
   treeFor(name) {
     if (this.app.env === 'production') {

@@ -6,6 +6,6 @@ export function initialize(/* application */) {
 }
 
 export default {
-  name: 'install-ember-devtools',
+  name: 'install-devtools',
   initialize
 };
