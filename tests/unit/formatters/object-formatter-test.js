@@ -88,9 +88,11 @@ test('show cached property after .set', function(assert) {
 test('show isDestroyed', function(assert) {
   const obj = Ember.Object.create();
 
+  const descriptor = Object.getOwnPropertyDescriptor(Ember.CoreObject.prototype, 'isDestroyed');
+
   const actual = property(obj, 'isDestroyed');
   const expected = jml.item(
-    jml.name('isDestroyed', false),
+    jml.name('isDestroyed', descriptor.enumerable),
     jml.separator(),
     jml.reference(false)
   );
