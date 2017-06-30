@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { initialize } from 'dummy/initializers/install-ember-devtools';
+import { initialize } from 'dummy/initializers/install-devtools';
 import { module, test } from 'qunit';
 import destroyApp from '../../helpers/destroy-app';
 

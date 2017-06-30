@@ -1,8 +1,8 @@
-import { allFormatters } from '../ember-devtools/formatter';
+import formatters from '../formatters';
 
 export function initialize(/* application */) {
   const old = window.devtoolsFormatters || [];
-  window.devtoolsFormatters = [ ...old, ...allFormatters ];
+  window.devtoolsFormatters = [ ...old, ...formatters ];
 }
 
 export default {
