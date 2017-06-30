@@ -13,6 +13,12 @@ export class ArrayFormatter {
   }
   body(obj) {
     function * items() {
+      yield jml.item(
+        jml.name('length', false),
+        jml.separator(),
+        jml.reference(Ember.get(obj, 'length'))
+      );
+      
       for (const [ idx, value ] of obj.toArray().entries()) {
         yield jml.item(
           jml.name(idx),
