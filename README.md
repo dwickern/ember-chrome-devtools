@@ -40,23 +40,10 @@ This addon formats Ember objects so that you can see their type and internal sta
 
 It can be helpful to inspect the html created by the formatters. Fortunately you can debug DevTools using a second DevTools instance.
 
-1. Start Chrome with remote debugging enabled:
-
-    OSX:
-    ```
-    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
-    ```
-    
-    Windows:
-    ```
-    chrome.exe --remote-debugging-port=9222
-    ```
-    
-2. Navigate to your ember application and open the debugger
-3. It helps to split DevTools in its own window using the first "Dock side" option:
+1. Hit Cmd-Alt-I to open DevTools
+1. Split DevTools in its own window using the first "Dock side" option:
 
    <img width="241" alt="screen shot 2017-06-30 at 4 30 50 pm" src="https://user-images.githubusercontent.com/752885/27757014-916a373e-5db1-11e7-97a4-383a972743ce.png">
 
-4. Attach your remote debugger using another Chrome instance or [standalone DevTools](https://github.com/auchenberg/chrome-devtools-app/releases)
+1. With DevTools focused, hit Cmd-Alt-I to open a second DevTools
 
-See also: https://chromedevtools.github.io/devtools-protocol/#remote
