@@ -88,7 +88,9 @@ test('show cached property after .set', function(assert) {
 test('show isDestroyed', function(assert) {
   const obj = Ember.Object.create();
 
-  const descriptor = Object.getOwnPropertyDescriptor(Ember.CoreObject.prototype, 'isDestroyed');
+  // Ember.Object#isDestroyed is enumerable on some ember versions but not others
+  // we don't really care either way but it will cause the deep equality check to fail
+  const descriptor = Object.getOwnPropertyDescriptor(Ember.Object.prototype, 'isDestroyed');
 
   const actual = property(obj, 'isDestroyed');
   const expected = jml.item(
