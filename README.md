@@ -1,5 +1,8 @@
 # ember-chrome-devtools
 
+[![npm version](https://badge.fury.io/js/ember-chrome-devtools.svg)](https://www.npmjs.com/package/ember-chrome-devtools)
+[![build status](https://travis-ci.org/dwickern/ember-chrome-devtools.svg?branch=master)](https://travis-ci.org/dwickern/ember-chrome-devtools)
+
 This addon formats Ember objects so that you can see their type and internal state at a glance. No more typing `.get()` into your console!
 
 <img width="1027" alt="x" src="https://user-images.githubusercontent.com/752885/27756654-3d8bce82-5dae-11e7-842a-b1a1700772d8.png">
