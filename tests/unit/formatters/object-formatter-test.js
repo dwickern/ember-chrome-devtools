@@ -6,6 +6,16 @@ import * as jml from 'ember-chrome-devtools/formatters/utils/jsonml';
 
 module('Unit | Formatters | object formatter');
 
+function lazyReference(property) {
+  const ref = property[property.length - 1];
+  if (ref.length === 2 && ref[0] === 'object') {
+    const lazy = ref[1].object;
+    if (lazy instanceof Lazy) {
+      return lazy;
+    }
+  }
+}
+
 test('used for Ember.Object only', function(assert) {
   const formatter = new ObjectFormatter();
 
@@ -41,12 +51,7 @@ test('lazy evaluate computed property', function(assert) {
   const obj = MyClass.create();
 
   const actual = property(obj, 'foo');
-
-  const ref = actual.pop();
-  assert.ok(ref.length === 2);
-  assert.equal(ref[0], 'object');
-  assert.ok(ref[1].object instanceof Lazy);
-
+  assert.ok(lazyReference(actual));
   assert.notOk(hadSideEffect);
 
   obj.get('foo');
@@ -100,4 +105,24 @@ test('show isDestroyed', function(assert) {
   );
 
   assert.deepEqual(actual, expected);
+});
+
+test('AliasedProperty', function(assert) {
+  const MyClass = Ember.Object.extend({
+    foo: Ember.computed(() => 'bar'),
+    bar: Ember.computed.readOnly('foo')
+  });
+  const obj = MyClass.create();
+
+  const notCached = lazyReference(property(obj, 'bar'));
+  assert.ok(notCached);
+
+  obj.get('bar'); // now cached
+
+  const cached = lazyReference(property(obj, 'bar'));
+  assert.ok(cached);
+
+  const expected = jml.reference('bar');
+  assert.deepEqual(notCached.compute(), expected);
+  assert.deepEqual(cached.compute(), expected);
 });
