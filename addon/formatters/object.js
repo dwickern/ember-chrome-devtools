@@ -15,11 +15,6 @@ function * getProperties(obj) {
   } while ((obj = Object.getPrototypeOf(obj)));
 }
 
-/** Whether the value is an Ember ComputedProperty, AliasedProperty, etc. */
-function isComputedProperty(value) {
-  return value !== null && typeof value === 'object' && value.isDescriptor;
-}
-
 /** Used in tests */
 function lookupDescriptor(obj, key) {
   do {
@@ -70,18 +65,12 @@ export function property(obj, key, descriptor = lookupDescriptor(obj, key)) {
     return;
   }
 
-  if (isComputedProperty(descriptor.value)) {
-    // Ember computed property
+  if (value instanceof Ember.ComputedProperty) {
+    // For convenience, show cached ComputedProperty without needing to expand it
+    // Don't check the cache for AliasedProperty https://github.com/emberjs/ember.js/issues/15545
     const cached = Ember.cacheFor(obj, key);
-    if (cached === undefined) {
-      // Lazy getter: forcing the property to compute might have a side effect
-      return jml.item(
-        jml.name(key, enumerable),
-        jml.separator(),
-        jml.computedPropertyIcon(),
-        jml.lazy(() => jml.reference(Ember.get(obj, key)))
-      );
-    } else {
+    if (cached !== undefined) {
+      // use the cached value
       return jml.item(
         jml.name(key, enumerable),
         jml.separator(),
@@ -89,6 +78,17 @@ export function property(obj, key, descriptor = lookupDescriptor(obj, key)) {
         jml.reference(cached)
       );
     }
+  }
+
+  if (value !== null && typeof value === 'object' && value.isDescriptor) {
+    // ComputedProperty (not cached) or AliasedProperty
+    // Create a lazy getter, because forcing the property to compute might have a side effect
+    return jml.item(
+      jml.name(key, enumerable),
+      jml.separator(),
+      jml.computedPropertyIcon(),
+      jml.lazy(() => jml.reference(Ember.get(obj, key)))
+    );
   }
 
   return jml.item(
