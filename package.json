@@ -1,6 +1,6 @@
 {
   "name": "ember-chrome-devtools",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Chrome DevTools addon for Ember.js",
   "keywords": [
     "ember-addon"
