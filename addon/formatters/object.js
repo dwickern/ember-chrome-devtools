@@ -98,6 +98,15 @@ export function property(obj, key, descriptor = lookupDescriptor(obj, key)) {
   );
 }
 
+export function * properties(obj) {
+  for (const [ key, descriptor ] of getProperties(obj)) {
+    const element = property(obj, key, descriptor);
+    if (element) {
+      yield element;
+    }
+  }
+}
+
 export class ObjectFormatter {
   header(obj) {
     if (obj instanceof Ember.Object && !Ember.Array.detect(obj)) {
@@ -109,15 +118,6 @@ export class ObjectFormatter {
   }
 
   body(obj) {
-    function * properties() {
-      for (const [ key, descriptor ] of getProperties(obj)) {
-        const element = property(obj, key, descriptor);
-        if (element) {
-          yield element;
-        }
-      }
-    }
-
-    return jml.list(...properties());
+    return jml.list(...properties(obj));
   }
 }
