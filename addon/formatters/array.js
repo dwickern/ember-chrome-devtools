@@ -1,5 +1,20 @@
 import Ember from 'ember';
+import { properties } from './object';
 import * as jml from './utils/jsonml';
+
+export function item(idx, value) {
+  return jml.item(
+    jml.name(idx),
+    jml.separator(),
+    jml.reference(value)
+  );
+}
+
+export function * items(obj) {
+  for (const [ idx, value ] of obj.toArray().entries()) {
+    yield item(idx, value);
+  }
+}
 
 export class ArrayFormatter {
   header(obj) {
@@ -12,22 +27,6 @@ export class ArrayFormatter {
     return true;
   }
   body(obj) {
-    function * items() {
-      yield jml.item(
-        jml.name('length', false),
-        jml.separator(),
-        jml.reference(Ember.get(obj, 'length'))
-      );
-      
-      for (const [ idx, value ] of obj.toArray().entries()) {
-        yield jml.item(
-          jml.name(idx),
-          jml.separator(),
-          jml.reference(value)
-        );
-      }
-    }
-
-    return jml.list(...items());
+    return jml.list(...items(obj), ...properties(obj));
   }
 }
