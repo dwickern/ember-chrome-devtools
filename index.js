@@ -4,8 +4,12 @@
 module.exports = {
   name: 'ember-chrome-devtools',
 
+  included(parent) {
+    this.isProductionBuild = parent.env === 'production';
+  },
+
   treeFor(name) {
-    if (this.app.env === 'production') {
+    if (this.isProductionBuild) {
       return;
     }
 
