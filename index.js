@@ -4,8 +4,24 @@
 module.exports = {
   name: 'ember-chrome-devtools',
 
+  findHost() {
+    // `ember-cli` >= 2.7.0 has _findHost
+    if (typeof this._findHost === 'function') {
+      return this._findHost();
+    }
+
+    // Otherwise we polyfill
+    let app;
+    let current = this;
+    do {
+      app = current.app || app;
+    } while (current.parent.parent && (current = current.parent));
+    return app;
+  },
+
   treeFor(name) {
-    if (this.app.env === 'production') {
+    let app = this.findHost();
+    if (app.env === 'production') {
       return;
     }
 
